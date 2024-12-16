@@ -35,7 +35,8 @@ services:
       exit 0;
       "
   clipable:
-    image: ghcr.io/clipable/clipable:latest
+    build:
+      context: .
     # All of these environment variables are documented here: https://github.com/clipable/clipable/wiki/Environment-Variables
     environment:
       MAX_UPLOAD_SIZE: 5GB

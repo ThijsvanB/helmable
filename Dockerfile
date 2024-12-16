@@ -1,4 +1,4 @@
-FROM golang:alpine as backend-build
+FROM golang:alpine AS backend-build
 
 ENV CGO_ENABLED=0
 ENV GOOS=linux
@@ -12,6 +12,7 @@ WORKDIR /home/node/app
 COPY frontend/pnpm-lock.yaml frontend/.npmr[c] ./
 RUN pnpm fetch
 
+ARG CACHE_BUST=1
 COPY frontend/ .
 RUN pnpm install -r --offline
 RUN pnpm build
@@ -22,7 +23,7 @@ FROM node:alpine
 WORKDIR /clipable
 RUN apk add --update --no-cache nginx supervisor
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 COPY --from=frontend-builder /home/node/app/next.config.js ./
 COPY --from=frontend-builder /home/node/app/public ./public
